@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ book.title }} - Noble Bookstore{% endblock %}
+
+{% block content %}
+<div class="book-detail">
+    <a href="/" class="back-link">← Back to Books</a>
+    
+    <div class="book-detail-container">
+        <div class="book-cover-large">📖</div>
+        <div class="book-info">
+            <h1>{{ book.title }}</h1>
+            <p class="author">by <strong>{{ book.author }}</strong></p>
+            <p class="description">{{ book.description }}</p>
+            
+            <div class="book-meta">
+                <div class="meta-item">
+                    <strong>Book ID:</strong> #{{ book.id }}
+                </div>
+                <div class="meta-item">
+                    <strong>Price:</strong> <span class="price">${{ book.price }}</span>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary btn-large">Add to Cart</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
