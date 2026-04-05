@@ -1,52 +1,76 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 style="color:red;">DASHBOARD LOADED</h1>
-<h2>
+<div class="container mt-4">
+    <h1 class="mb-4">📊 Dashboard</h1>
+    <p>Welcome, <strong>{{ session.username }}</strong></p>
 
-📊 Dashboard
+    <div class="row g-4">
+        <!-- Checkout Card -->
+        <div class="col-md-4">
+            <div class="card text-white bg-primary h-100">
+                <div class="card-body">
+                    <h5 class="card-title">💳 Checkout</h5>
+                    <p class="card-text">Process sales and update inventory.</p>
+                    <a href="{{ url_for('checkout') }}" class="btn btn-light">Go</a>
+                </div>
+            </div>
+        </div>
 
-</h2>
+        <!-- Books Card -->
+        <div class="col-md-4">
+            <div class="card text-white bg-success h-100">
+                <div class="card-body">
+                    <h5 class="card-title">📚 Books</h5>
+                    <p class="card-text">View and manage book inventory.</p>
+                    <a href="{{ url_for('books') }}" class="btn btn-light">Go</a>
+                </div>
+            </div>
+        </div>
 
-<p>
+        <!-- Low Stock Card -->
+        <div class="col-md-4">
+            <div class="card text-white bg-warning h-100">
+                <div class="card-body">
+                    <h5 class="card-title">⚠️ Low Stock</h5>
+                    <p class="card-text">Check books that are low on stock.</p>
+                    <a href="{{ url_for('low_stock') }}" class="btn btn-light">Go</a>
+                </div>
+            </div>
+        </div>
 
-Welcome,
+        <!-- Purchase Orders Card -->
+        <div class="col-md-4">
+            <div class="card text-white bg-info h-100">
+                <div class="card-body">
+                    <h5 class="card-title">📝 Purchase Orders</h5>
+                    <p class="card-text">Manage and create purchase orders.</p>
+                    <a href="{{ url_for('purchase_orders') }}" class="btn btn-light">Go</a>
+                </div>
+            </div>
+        </div>
 
-<strong>
+        <!-- Suppliers Card -->
+        <div class="col-md-4">
+            <div class="card text-white bg-secondary h-100">
+                <div class="card-body">
+                    <h5 class="card-title">🏢 Suppliers</h5>
+                    <p class="card-text">View and manage suppliers.</p>
+                    <a href="{{ url_for('suppliers') }}" class="btn btn-light">Go</a>
+                </div>
+            </div>
+        </div>
 
-{{ session.username }}
-
-</strong>
-
-</p>
-
-<div class="row">
-
-<div class="col-md-6">
-
-<div class="card">
-
-<div class="card-body">
-
-<h5>
-
-📚 Manage Inventory
-
-</h5>
-
-<a href="{{ url_for('books') }}"
-class="btn btn-primary">
-
-View Books
-
-</a>
-
+        <!-- Sales History Card -->
+        <div class="col-md-4">
+            <div class="card text-white bg-dark h-100">
+                <div class="card-body">
+                    <h5 class="card-title">📈 Sales History</h5>
+                    <p class="card-text">View past sales and totals.</p>
+                    <a href="{{ url_for('sales_history') }}" class="btn btn-light">Go</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-</div>
-
-</div>
-
-</div>
-
 {% endblock %}

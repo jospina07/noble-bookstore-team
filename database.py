@@ -19,6 +19,7 @@ def init_db():
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     """)
+    
 
     # USERS TABLE WITH ROLE
     cursor.execute("""

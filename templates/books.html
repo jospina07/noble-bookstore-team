@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">📚 Book Inventory</h2>
+
+    <!-- Add New Book Button -->
+    <a href="{{ url_for('add_book') }}" class="btn btn-success mb-3">➕ Add New Book</a>
+
+    <!-- Books Table -->
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.isbn }}</td>
+                <td>{{ book.quantity }}</td>
+                <td>
+                    <a href="{{ url_for('generate_barcode', book_id=book.id) }}" class="btn btn-sm btn-warning">Barcode</a>
+                    <a href="{{ url_for('edit_book', book_id=book.id) }}" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="{{ url_for('delete_book', book_id=book.id) }}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
