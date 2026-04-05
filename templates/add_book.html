@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel form-shell">
+	<div class="form-header">
+		<div>
+			<p class="eyebrow">Inventory Input</p>
+			<h1 class="section-title section-title--compact">Add Book</h1>
+			<p class="section-copy">Create a new catalog entry with the title, pricing, and description shown on the storefront cards and detail page.</p>
+		</div>
+		<a class="action-button action-button--secondary" href="{{ url_for('dashboard') }}">Back to Inventory</a>
+	</div>
+
+	<form class="form-grid" method="post" novalidate>
+		<div class="field">
+			<label for="title">Title</label>
+			<input id="title" name="title" type="text" value="{{ form_data.title }}" required>
+		</div>
+
+		<div class="field">
+			<label for="author">Author</label>
+			<input id="author" name="author" type="text" value="{{ form_data.author }}" required>
+		</div>
+
+		<div class="field">
+			<label for="isbn">ISBN</label>
+			<input id="isbn" name="isbn" type="text" value="{{ form_data.isbn }}">
+			<small>Leave blank if you do not want to assign one yet.</small>
+		</div>
+
+		<div class="field">
+			<label for="quantity">Quantity</label>
+			<input id="quantity" name="quantity" type="number" min="0" step="1" value="{{ form_data.quantity }}" required>
+		</div>
+
+		<div class="field">
+			<label for="price">Price</label>
+			<input id="price" name="price" type="number" min="0.01" step="0.01" value="{{ form_data.price }}" required>
+		</div>
+
+		<div class="field field--full">
+			<label for="description">Description</label>
+			<textarea id="description" name="description" required>{{ form_data.description }}</textarea>
+		</div>
+
+		<div class="form-actions">
+			<a class="action-button action-button--secondary" href="{{ url_for('dashboard') }}">Cancel</a>
+			<button class="action-button" type="submit">Save Book</button>
+		</div>
+	</form>
+</section>
+{% endblock %}

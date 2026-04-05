@@ -1,59 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
+<section class="auth-shell">
+	<div class="auth-panel">
+		<p class="eyebrow">Admin Access</p>
+		<h1 class="auth-title">Sign in to manage inventory</h1>
+		<p class="auth-copy">Use the inventory workspace to add new titles, edit book details, and keep the storefront catalog up to date.</p>
 
-<div class="row justify-content-center">
+		<form class="form-grid" method="post" novalidate>
+			<div class="field field--full">
+				<label for="username">Username</label>
+				<input id="username" name="username" type="text" autocomplete="username" required>
+			</div>
 
-<div class="col-md-4">
+			<div class="field field--full">
+				<label for="password">Password</label>
+				<input id="password" name="password" type="password" autocomplete="current-password" required>
+			</div>
 
-<h3 class="text-center mb-4">
+			<div class="form-actions">
+				<a class="action-button action-button--secondary" href="{{ url_for('home') }}">Back to Store</a>
+				<button class="action-button" type="submit">Login</button>
+			</div>
+		</form>
 
-🔐 Login
-
-</h3>
-
-<form method="POST">
-
-<div class="mb-3">
-
-<label class="form-label">
-
-Username
-
-</label>
-
-<input type="text"
-name="username"
-class="form-control"
-required>
-
-</div>
-
-<div class="mb-3">
-
-<label class="form-label">
-
-Password
-
-</label>
-
-<input type="password"
-name="password"
-class="form-control"
-required>
-
-</div>
-
-<button class="btn btn-primary w-100">
-
-Login
-
-</button>
-
-</form>
-
-</div>
-
-</div>
-
+		<div class="auth-help">
+			Demo admin login: <strong>admin</strong> / <strong>admin123</strong>
+		</div>
+	</div>
+</section>
 {% endblock %}

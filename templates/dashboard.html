@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="admin-header">
+	<div>
+		<p class="eyebrow">Inventory Manager</p>
+		<h1 class="section-title section-title--compact">Inventory Dashboard</h1>
+		<p class="section-copy">Manage the catalog behind Noble Bookstore, review stock levels, and update listings before they go live on the storefront.</p>
+	</div>
+
+	{% if session.get('role') == 'admin' %}
+		<a class="action-button" href="{{ url_for('add_book') }}">Add New Book</a>
+	{% endif %}
+</section>
+
+<section class="stats-grid">
+	<article class="stat-card">
+		<p class="stat-card__label">Titles</p>
+		<p class="stat-card__value">{{ total_titles }}</p>
+	</article>
+	<article class="stat-card">
+		<p class="stat-card__label">Units In Stock</p>
+		<p class="stat-card__value">{{ total_units }}</p>
+	</article>
+	<article class="stat-card">
+		<p class="stat-card__label">Inventory Value</p>
+		<p class="stat-card__value">${{ '%.2f'|format(inventory_value) }}</p>
+	</article>
+</section>
+
+<section class="panel">
+	<div class="panel__header">
+		<div>
+			<h2 class="panel__title">Book Listings</h2>
+			<p class="panel__subtitle">Each record includes the data shown to customers on the public site.</p>
+		</div>
+	</div>
+
+	<div class="table-wrap">
+		<table class="inventory-table">
+			<thead>
+				<tr>
+					<th>Book</th>
+					<th>ISBN</th>
+					<th>Quantity</th>
+					<th>Price</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for book in books %}
+					<tr>
+						<td>
+							<strong>{{ book.title }}</strong>
+							<span>{{ book.author }}</span>
+						</td>
+						<td>{{ book.isbn or 'N/A' }}</td>
+						<td>{{ book.quantity }}</td>
+						<td>${{ '%.2f'|format(book.price) }}</td>
+						<td>
+							<div class="inventory-actions">
+								<a class="action-button action-button--secondary" href="{{ url_for('book_detail', book_id=book.id) }}">View</a>
+								{% if session.get('role') == 'admin' %}
+									<a class="action-button" href="{{ url_for('edit_book', book_id=book.id) }}">Edit</a>
+								{% endif %}
+							</div>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="5">No books are currently in inventory.</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</section>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="admin-header">
+    <div>
+        <p class="eyebrow">About Noble</p>
+        <h1 class="section-title section-title--compact">A bookstore built around timeless titles</h1>
+        <p class="section-copy">Noble Bookstore blends a clean digital storefront with a simple inventory workspace so the public catalog and internal records stay aligned.</p>
+    </div>
+</section>
+
+<section class="content-split">
+    <article class="info-card">
+        <h3>Our Story</h3>
+        <p>Noble Bookstore was designed to feel like a curated shelf rather than a crowded marketplace. Every title is presented with a concise summary, visible pricing, and a focused detail page that makes browsing straightforward.</p>
+        <p>The inventory side of the app gives staff a faster workflow for adding, updating, and reviewing books without needing a separate admin system.</p>
+    </article>
+
+    <div class="info-stack">
+        <article class="stat-card">
+            <p class="stat-card__label">Current Titles</p>
+            <p class="stat-card__value">{{ total_titles }}</p>
+        </article>
+        <article class="stat-card">
+            <p class="stat-card__label">Platform</p>
+            <p class="stat-card__value">Flask + SQLite</p>
+        </article>
+    </div>
+</section>
+
+<section class="content-split" style="margin-top: 22px;">
+    <article class="info-card">
+        <h3>What This App Includes</h3>
+        <ul>
+            <li>A public storefront with a collection view and book detail pages.</li>
+            <li>An inventory dashboard for adding and editing catalog entries.</li>
+            <li>A lightweight admin login flow for managing the catalog.</li>
+        </ul>
+    </article>
+
+    <article class="info-card">
+        <h3>Design Direction</h3>
+        <p>The interface uses a cool navy foundation, warm coral actions, large headings, and simple card layouts to match the clean bookstore screenshots you provided.</p>
+    </article>
+</section>
+{% endblock %}

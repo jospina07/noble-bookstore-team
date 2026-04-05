@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="admin-header">
+    <div>
+        <p class="eyebrow">Contact</p>
+        <h1 class="section-title section-title--compact">Get in touch with Noble Bookstore</h1>
+        <p class="section-copy">Use the contact form for general questions, catalog requests, or help with the inventory workspace.</p>
+    </div>
+</section>
+
+<section class="contact-grid">
+    <article class="panel form-shell">
+        <div class="panel__header">
+            <div>
+                <h2 class="panel__title">Send a message</h2>
+                <p class="panel__subtitle">This form confirms the submission in-app so the button leads somewhere useful.</p>
+            </div>
+        </div>
+
+        <form class="form-grid" method="post" novalidate>
+            <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" value="{{ form_data.name }}" required>
+            </div>
+
+            <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" value="{{ form_data.email }}" required>
+            </div>
+
+            <div class="field field--full">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required>{{ form_data.message }}</textarea>
+            </div>
+
+            <div class="form-actions">
+                <a class="action-button action-button--secondary" href="{{ url_for('home') }}">Back to Store</a>
+                <button class="action-button" type="submit">Send Message</button>
+            </div>
+        </form>
+    </article>
+
+    <aside class="info-stack">
+        <article class="info-card">
+            <h3>Store Information</h3>
+            <div class="contact-list">
+                <div class="contact-item">
+                    <strong>Email</strong>
+                    hello@noblebookstore.local
+                </div>
+                <div class="contact-item">
+                    <strong>Phone</strong>
+                    (555) 010-2048
+                </div>
+                <div class="contact-item">
+                    <strong>Hours</strong>
+                    Monday to Saturday, 9:00 AM to 6:00 PM
+                </div>
+            </div>
+        </article>
+
+        <article class="info-card">
+            <h3>Need Inventory Help?</h3>
+            <p>Admins can sign in from the login page to update book prices, descriptions, stock levels, and other catalog details shown on the storefront.</p>
+        </article>
+    </aside>
+</section>
+{% endblock %}

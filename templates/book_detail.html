@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="detail-shell">
+    <a class="back-link" href="{{ url_for('home') }}">&larr; Back to Books</a>
+
+    <div class="detail-card">
+        <div class="book-art detail-art">
+            <span class="book-art__icon">&#128218;</span>
+        </div>
+
+        <div class="detail-copy">
+            <h1>{{ book.title }}</h1>
+            <p class="detail-author">by {{ book.author }}</p>
+            <p class="detail-description">{{ book.description }}</p>
+
+            <div class="detail-meta">
+                <div><strong>Book ID:</strong> #{{ book.id }}</div>
+                <div><strong>Price:</strong> <span class="price">${{ '%.2f'|format(book.price) }}</span></div>
+            </div>
+
+            <form method="post" action="{{ url_for('add_to_cart', book_id=book.id) }}">
+                <button class="action-button" type="submit">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
