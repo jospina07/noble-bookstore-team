@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Noble Bookstore{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Welcome to Noble Bookstore</h1>
+    <p>Discover our collection of classic and contemporary books</p>
+</div>
+
+<section class="books-section">
+    <h2>Our Collection</h2>
+    <div class="books-grid">
+        {% for book in books %}
+        <div class="book-card">
+            <div class="book-cover">📖</div>
+            <h3>{{ book.title }}</h3>
+            <p class="author">by {{ book.author }}</p>
+            <p class="description">{{ book.description }}</p>
+            <div class="book-footer">
+                <span class="price">${{ book.price }}</span>
+                <a href="/book/{{ book.id }}" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
