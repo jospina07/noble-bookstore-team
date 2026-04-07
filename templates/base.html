@@ -20,30 +20,30 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('dashboard') }}">Bookstore</a>
+        <a class="navbar-brand" href="{{ url_for('books.dashboard') }}">Bookstore</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a class="nav-link" href="{{ url_for('books.dashboard') }}">Dashboard</a>
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('checkout') }}">Checkout</a>
+                    <a class="nav-link" href="{{ url_for('books.checkout') }}">Checkout</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('low_stock') }}">Low Stock</a>
+                    <a class="nav-link" href="{{ url_for('books.low_stock') }}">Low Stock</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('purchase_orders') }}">Purchase Orders</a>
+                    <a class="nav-link" href="{{ url_for('books.purchase_orders') }}">Purchase Orders</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('suppliers') }}">Suppliers</a>
+                    <a class="nav-link" href="{{ url_for('books.suppliers') }}">Suppliers</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('sales_history') }}">Sales History</a>
+                <li class="nav-link">
+                    <a class="nav-link" href="{{ url_for('books.sales_history') }}">Sales History</a>
                 </li>
             </ul>
         </div>
