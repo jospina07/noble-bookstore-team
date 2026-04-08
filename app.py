@@ -54,7 +54,8 @@ class Book(db.Model):
         nullable=False
     )
 class Sale(db.Model):
-        id = db.Column(
+
+    id = db.Column(
         db.Integer,
         primary_key=True
     )
@@ -92,8 +93,6 @@ class Sale(db.Model):
         db.Float,
         nullable=False
     )
-
-
 class PurchaseOrder(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(
@@ -617,11 +616,10 @@ def add_supplier():
 
 import os
 
-if __name__ == "__main__":
+with app.app_context():
+    db.create_all()
 
-    with app.app_context():
-        db.create_all()
-        create_default_users()
+if __name__ == "__main__":
 
     port = int(os.environ.get("PORT", 5000))
 
