@@ -613,11 +613,15 @@ def add_supplier():
 # --------------------------
 # Main
 # --------------------------
+# --------------------------
+# Main
+# --------------------------
 
 import os
 
 with app.app_context():
     db.create_all()
+    create_default_users()
 
 if __name__ == "__main__":
 
