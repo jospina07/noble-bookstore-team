@@ -209,7 +209,19 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/logout')
+def logout():
 
+    session.clear()
+
+    flash(
+        "Logged out successfully.",
+        "success"
+    )
+
+    return redirect(
+        url_for('login')
+    )
 # --------------------------
 # Dashboard
 # --------------------------
