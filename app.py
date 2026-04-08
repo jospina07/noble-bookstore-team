@@ -1,88 +1,28 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
-<<<<<<< HEAD
-from wtforms import StringField, FloatField, TextAreaField, SubmitField, PasswordField, ValidationError
-from wtforms.validators import DataRequired, Email, NumberRange, Length
-from flask_wtf import FlaskForm
-from functools import wraps
-import hashlib
-import os
-=======
 from datetime import datetime
 import barcode
 from barcode.writer import ImageWriter
->>>>>>> 294f536 (Updated database models and barcode features)
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key-change-this'
+app.secret_key = "supersecretkey"
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bookstore.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# ==================== DATABASE MODELS ====================
-class User(db.Model):
-    """User model for authentication."""
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-
-    def set_password(self, password):
-        """Hash and set password."""
-        self.password = hashlib.sha256(password.encode()).hexdigest()
-
-    def check_password(self, password):
-        """Check if password matches."""
-        return self.password == hashlib.sha256(password.encode()).hexdigest()
-
+# --------------------------
+# Database Models
+# --------------------------
 
 class Book(db.Model):
-<<<<<<< HEAD
-    """Book model for inventory."""
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    author = db.Column(db.String(120), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    description = db.Column(db.Text)
-
-    def to_dict(self):
-        """Convert book to dictionary."""
-        return {
-            'id': self.id,
-            'title': self.title,
-            'author': self.author,
-            'price': self.price,
-            'description': self.description
-        }
-=======
->>>>>>> 294f536 (Updated database models and barcode features)
 
     id = db.Column(
         db.Integer,
         primary_key=True
     )
 
-<<<<<<< HEAD
-# ==================== FORMS WITH VALIDATION ====================
-class AddBookForm(FlaskForm):
-    """Form to add a new book."""
-    title = StringField('Book Title', validators=[
-        DataRequired(message='Title is required'),
-        Length(min=2, max=200, message='Title must be between 2 and 200 characters')
-    ])
-    author = StringField('Author', validators=[
-        DataRequired(message='Author is required'),
-        Length(min=2, max=120, message='Author name must be between 2 and 120 characters')
-    ])
-    price = FloatField('Price', validators=[
-        DataRequired(message='Price is required'),
-        NumberRange(min=0.01, message='Price must be greater than 0')
-    ])
-    description = TextAreaField('Description', validators=[
-        Length(max=1000, message='Description cannot exceed 1000 characters')
-    ])
-    submit = SubmitField('Add Book')
-=======
     title = db.Column(
         db.String(150),
         nullable=False
@@ -148,85 +88,67 @@ class Sale(db.Model):
         db.Float,
         nullable=False
     )
->>>>>>> 294f536 (Updated database models and barcode features)
 
 
-class EditBookForm(FlaskForm):
-    """Form to edit an existing book."""
-    title = StringField('Book Title', validators=[
-        DataRequired(message='Title is required'),
-        Length(min=2, max=200, message='Title must be between 2 and 200 characters')
-    ])
-    author = StringField('Author', validators=[
-        DataRequired(message='Author is required'),
-        Length(min=2, max=120, message='Author name must be between 2 and 120 characters')
-    ])
-    price = FloatField('Price', validators=[
-        DataRequired(message='Price is required'),
-        NumberRange(min=0.01, message='Price must be greater than 0')
-    ])
-    description = TextAreaField('Description', validators=[
-        Length(max=1000, message='Description cannot exceed 1000 characters')
-    ])
-    submit = SubmitField('Update Book')
+class PurchaseOrder(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(
+        db.Integer,
+        db.ForeignKey('book.id'),
+        nullable=False
+    )
+    quantity = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
 
 
-class LoginForm(FlaskForm):
-    """Form for user login."""
-    username = StringField('Username', validators=[
-        DataRequired(message='Username is required'),
-        Length(min=3, max=80, message='Username must be between 3 and 80 characters')
-    ])
-    password = PasswordField('Password', validators=[
-        DataRequired(message='Password is required'),
-        Length(min=6, message='Password must be at least 6 characters')
-    ])
-    submit = SubmitField('Login')
+class Supplier(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    contact = db.Column(db.String(100))
 
 
-# ==================== AUTHENTICATION HELPER ====================
-def login_required(f):
-    """Decorator to require login for routes."""
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'user_id' not in session:
-            flash('You must be logged in to access this page.', 'warning')
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(
+        db.String(100),
+        unique=True,
+        nullable=False
+    )
+    password = db.Column(
+        db.String(100),
+        nullable=False
+    )
+    role = db.Column(
+        db.String(20),
+        nullable=False
+    )
 
+# --------------------------
+# Create Default Users
+# --------------------------
 
-# ==================== ROUTES ====================
-@app.route('/')
-def home():
-    """Display the homepage with all books."""
-    books = Book.query.all()
-    return render_template('index.html', books=books)
+def create_default_users():
 
+    users = [
 
-@app.route('/book/<int:book_id>')
-def book_detail(book_id):
-    """Display details for a specific book."""
-    book = Book.query.get_or_404(book_id)
-    return render_template('book_detail.html', book=book)
+        User(
+            username="EBarreno01",
+            password="EBarreno01",
+            role="admin"
+        ),
 
+        User(
+            username="JOspina02",
+            password="JOspina02",
+            role="admin"
+        ),
 
-@app.route('/api/books')
-def api_books():
-    """API endpoint to get all books as JSON."""
-    books = Book.query.all()
-    return jsonify([book.to_dict() for book in books])
+        User(
+            username="KPeekSM",
+            password="KPeekSM",
+            role="admin"
+        ),
 
-<<<<<<< HEAD
-
-@app.route('/api/books/<int:book_id>')
-def api_book_detail(book_id):
-    """API endpoint to get a specific book as JSON."""
-    book = Book.query.get(book_id)
-    if not book:
-        return jsonify({'error': 'Book not found'}), 404
-    return jsonify(book.to_dict())
-=======
         User(
             username="ROwens03",
             password="ROwens03",
@@ -243,60 +165,82 @@ def api_book_detail(book_id):
             role="user"
         )
     ]
->>>>>>> 294f536 (Updated database models and barcode features)
 
+    for user in users:
 
-@app.route('/login', methods=['GET', 'POST'])
+        existing = User.query.filter_by(
+            username=user.username
+        ).first()
+
+        if not existing:
+            db.session.add(user)
+
+    db.session.commit()
+
+# --------------------------
+# Login Route
+# --------------------------
+
+@app.route('/', methods=['GET', 'POST'])
 def login():
-    """Handle user login."""
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user and user.check_password(form.password.data):
-            session['user_id'] = user.id
+
+    if request.method == 'POST':
+
+        username = request.form['username']
+        password = request.form['password']
+
+        user = User.query.filter_by(
+            username=username,
+            password=password
+        ).first()
+
+        if user:
+
             session['username'] = user.username
-            flash(f'Welcome back, {user.username}!', 'success')
-            return redirect(url_for('inventory'))
+            session['role'] = user.role
+
+            return redirect(url_for('dashboard'))
+
         else:
-            flash('Invalid username or password.', 'danger')
-    return render_template('login.html', form=form)
+            flash("Invalid login credentials", "danger")
+
+    return render_template('login.html')
 
 
-@app.route('/logout')
-def logout():
-    """Handle user logout."""
-    session.clear()
-    flash('You have been logged out.', 'success')
-    return redirect(url_for('home'))
+# --------------------------
+# Dashboard
+# --------------------------
+
+@app.route('/dashboard')
+def dashboard():
+
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    return render_template(
+        'dashboard.html',
+        username=session['username'],
+        role=session['role']
+    )
 
 
-@app.route('/inventory')
-@login_required
-def inventory():
-    """Display inventory management screen (admin view)."""
-    books = Book.query.all()
-    return render_template('inventory.html', books=books)
+# --------------------------
+# Book Management
+# --------------------------
+
+@app.route('/books')
+def books():
+
+    all_books = Book.query.all()
+
+    return render_template(
+        'books.html',
+        books=all_books
+    )
 
 
-@app.route('/add-book', methods=['GET', 'POST'])
-@login_required
+@app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
-<<<<<<< HEAD
-    """Handle adding a new book."""
-    form = AddBookForm()
-    if form.validate_on_submit():
-        new_book = Book(
-            title=form.title.data,
-            author=form.author.data,
-            price=form.price.data,
-            description=form.description.data
-        )
-        db.session.add(new_book)
-        db.session.commit()
-        flash(f'Book "{new_book.title}" added successfully!', 'success')
-        return redirect(url_for('inventory'))
-    return render_template('add_book.html', form=form)
-=======
 
     if request.method == 'POST':
 
@@ -337,60 +281,78 @@ def add_book():
             return redirect(url_for('add_book'))
 
     return render_template('add_book.html')
->>>>>>> 294f536 (Updated database models and barcode features)
 
 
-@app.route('/edit-book/<int:book_id>', methods=['GET', 'POST'])
-@login_required
+@app.route('/edit_book/<int:book_id>', methods=['GET', 'POST'])
 def edit_book(book_id):
-    """Handle editing a book."""
+
     book = Book.query.get_or_404(book_id)
-    form = EditBookForm()
-    
-    if form.validate_on_submit():
-        book.title = form.title.data
-        book.author = form.author.data
-        book.price = form.price.data
-        book.description = form.description.data
-        db.session.commit()
-        flash(f'Book "{book.title}" updated successfully!', 'success')
-        return redirect(url_for('inventory'))
-    
-    elif request.method == 'GET':
-        form.title.data = book.title
-        form.author.data = book.author
-        form.price.data = book.price
-        form.description.data = book.description
-    
-    return render_template('edit_book.html', form=form, book=book)
+
+    if request.method == 'POST':
+
+        try:
+
+            book.title = request.form['title']
+            book.author = request.form['author']
+            book.isbn = request.form['isbn']
+            book.price = float(request.form['price'])   
+            book.quantity = int(request.form['quantity'])
+
+            db.session.commit()
+
+            flash(
+                f"Book '{book.title}' updated successfully!",
+                "success"
+            )
+
+            return redirect(url_for('books'))
+
+        except Exception as e:
+
+            flash(
+                f"Error updating book: {e}",
+                "danger"
+            )
+
+            return redirect(
+                url_for('edit_book', book_id=book.id)
+            )
+
+    return render_template(
+        'edit_book.html',
+        book=book
+    )
 
 
-<<<<<<< HEAD
-@app.route('/delete-book/<int:book_id>', methods=['POST'])
-@login_required
-=======
 # --------------------------
 # Delete Book
 # --------------------------
 
 @app.route('/delete_book/<int:book_id>')
->>>>>>> 294f536 (Updated database models and barcode features)
 def delete_book(book_id):
-    """Handle deleting a book."""
+
     book = Book.query.get_or_404(book_id)
-    title = book.title
-    db.session.delete(book)
-    db.session.commit()
-    flash(f'Book "{title}" has been deleted.', 'success')
-    return redirect(url_for('inventory'))
+
+    try:
+
+        db.session.delete(book)
+        db.session.commit()
+
+        flash(
+            f"Book '{book.title}' deleted successfully!",
+            "success"
+        )
+
+    except Exception as e:
+
+        flash(
+            f"Error deleting book: {e}",
+            "danger"
+        )
+
+    return redirect(url_for('books'))
 
 
-<<<<<<< HEAD
-@app.route('/about')
-def about():
-    """Display the about page."""
-    return render_template('about.html')
-=======
 # --------------------------
 # Barcode Generator
 # --------------------------
@@ -424,25 +386,14 @@ def generate_barcode(book_id):
 # --------------------------
 # Checkout
 # --------------------------
->>>>>>> 294f536 (Updated database models and barcode features)
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout():
 
-
-@app.route('/contact', methods=['GET', 'POST'])
-def contact():
-    """Handle contact form."""
     if request.method == 'POST':
-<<<<<<< HEAD
-        name = request.form.get('name')
-        email = request.form.get('email')
-        message = request.form.get('message')
-        # In a real app, you would save this or send an email
-        return render_template('contact.html', success=True, name=name)
-    return render_template('contact.html')
-=======
 
         try:
 
-            book_id = int(
+            selected_book_id = int(
                 request.form['book_id']
             )
 
@@ -450,12 +401,22 @@ def contact():
                 request.form['quantity']
             )
 
-            book = Book.query.get(book_id)
+            book = Book.query.get_or_404(
+                selected_book_id
+            )
 
+            # Calculate totals
+            subtotal = book.price * quantity
+
+            tax = subtotal * 0.07
+
+            total = subtotal + tax
+
+            # Reduce inventory
             if book.quantity < quantity:
 
                 flash(
-                    "Not enough stock.",
+                    "Not enough stock available!",
                     "danger"
                 )
 
@@ -463,43 +424,18 @@ def contact():
                     url_for('checkout')
                 )
 
-            subtotal = book.price * quantity
+            book.quantity -= quantity
 
-            tax = subtotal * 0.07
-
-            total = subtotal + tax
-
+            # Save sale
             sale = Sale(
-
                 book_id=book.id,
-
                 quantity=quantity,
-
                 subtotal=subtotal,
-
                 tax=tax,
-
                 total=total
-
             )
 
             db.session.add(sale)
-
-            # Update inventory
-            book.quantity -= quantity
-
-            # Auto reorder
-            if book.quantity <= 5:
-
-                order = PurchaseOrder(
-
-                    book_id=book.id,
-
-                    quantity=10
-
-                )
-
-                db.session.add(order)
 
             db.session.commit()
 
@@ -509,13 +445,13 @@ def contact():
             )
 
             return redirect(
-                url_for('dashboard')
+                url_for('receipt', sale_id=sale.id)
             )
 
         except Exception as e:
 
             flash(
-                f"Error: {e}",
+                f"Error processing sale: {e}",
                 "danger"
             )
 
@@ -529,20 +465,14 @@ def contact():
         'checkout.html',
         books=books
     )
+
 @app.route("/receipt/<int:sale_id>")
 def receipt(sale_id):
->>>>>>> 294f536 (Updated database models and barcode features)
 
     sale = Sale.query.get_or_404(
         sale_id
     )
 
-<<<<<<< HEAD
-@app.errorhandler(404)
-def not_found(error):
-    """Handle 404 errors."""
-    return render_template('404.html'), 404
-=======
     return render_template(
         "receipt.html",
         sale=sale
@@ -596,67 +526,102 @@ def purchase_orders():
         orders=orders,
         books=books
     )
->>>>>>> 294f536 (Updated database models and barcode features)
 
 
-@app.errorhandler(500)
-def server_error(error):
-    """Handle 500 errors."""
-    return render_template('500.html'), 500
+@app.route('/add_purchase_order', methods=['POST'])
+def add_purchase_order():
+
+    try:
+
+        book_id = int(request.form['book_id'])
+        quantity = int(request.form['quantity'])
+
+        order = PurchaseOrder(
+            book_id=book_id,
+            quantity=quantity
+        )
+
+        db.session.add(order)
+        db.session.commit()
+
+        flash(
+            "Purchase order created.",
+            "success"
+        )
+
+    except Exception as e:
+
+        flash(
+            f"Error creating order: {e}",
+            "danger"
+        )
+
+    return redirect(
+        url_for('purchase_orders')
+    )
 
 
-# ==================== DATABASE INITIALIZATION ====================
-def init_db():
-    """Initialize the database with sample data."""
+# --------------------------
+# Suppliers
+# --------------------------
+
+@app.route('/suppliers')
+def suppliers():
+
+    all_suppliers = Supplier.query.all()
+
+    return render_template(
+        'suppliers.html',
+        suppliers=all_suppliers
+    )
+
+
+@app.route('/add_supplier', methods=['POST'])
+def add_supplier():
+
+    try:
+
+        name = request.form['name']
+        contact = request.form.get('contact', '')
+
+        supplier = Supplier(
+            name=name,
+            contact=contact
+        )
+
+        db.session.add(supplier)
+        db.session.commit()
+
+        flash(
+            "Supplier added.",
+            "success"
+        )
+
+    except Exception as e:
+
+        flash(
+            f"Error adding supplier: {e}",
+            "danger"
+        )
+
+    return redirect(
+        url_for('suppliers')
+    )
+# --------------------------
+# Main
+# --------------------------
+
+import os
+
+if __name__ == "__main__":
+
     with app.app_context():
         db.create_all()
-        
-        # Check if books already exist
-        if Book.query.first() is None:
-            sample_books = [
-                Book(
-                    title='The Great Gatsby',
-                    author='F. Scott Fitzgerald',
-                    price=12.99,
-                    description='A classic novel of the Jazz Age.'
-                ),
-                Book(
-                    title='To Kill a Mockingbird',
-                    author='Harper Lee',
-                    price=14.99,
-                    description='A gripping tale of racial injustice and childhood innocence.'
-                ),
-                Book(
-                    title='1984',
-                    author='George Orwell',
-                    price=13.99,
-                    description='A dystopian novel about totalitarianism.'
-                ),
-                Book(
-                    title='Pride and Prejudice',
-                    author='Jane Austen',
-                    price=11.99,
-                    description='A romantic novel of manners and marriage.'
-                ),
-                Book(
-                    title='The Catcher in the Rye',
-                    author='J.D. Salinger',
-                    price=13.99,
-                    description='A story of teenage rebellion and alienation.'
-                ),
-            ]
-            db.session.add_all(sample_books)
-            db.session.commit()
-        
-        # Check if admin user exists
-        if User.query.filter_by(username='admin').first() is None:
-            admin_user = User(username='admin')
-            admin_user.set_password('admin123')
-            db.session.add(admin_user)
-            db.session.commit()
+        create_default_users()
 
+    port = int(os.environ.get("PORT", 5000))
 
-if __name__ == '__main__':
-    init_db()
-    print('TEMPORARY TEST LINE')
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    app.run(
+        host="0.0.0.0",
+        port=port
+    )
