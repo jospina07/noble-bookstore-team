@@ -12,7 +12,7 @@ from barcode.writer import ImageWriter
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-change-this'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bookstore.db'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-change-this')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -226,7 +226,7 @@ def contact():
 # ==================== DATABASE INITIALIZATION ====================
 def init_db():
     with app.app_context():
-        db.drop_all()  # Drop existing tables for a clean slate
+  # 
         db.create_all()
         admin = User.query.filter_by(username='admin').first()
         if not admin:
