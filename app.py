@@ -188,16 +188,22 @@ def delete_book(book_id):
     return redirect(url_for('inventory'))
 
 @app.route('/generate_barcode/<int:book_id>')
+@login_required
 def generate_barcode(book_id):
     book = Book.query.get_or_404(book_id)
     isbn = book.isbn
-    # Ensure directory exists
-    if not os.path.exists('static/barcodes'):
-        os.makedirs('static/barcodes')
+    
+    # Use a more robust path for the server
+    barcode_dir = os.path.join(app.root_path, 'static', 'barcodes')
+    if not os.path.exists(barcode_dir):
+        os.makedirs(barcode_dir)
+        
     code = barcode.get('code128', isbn, writer=ImageWriter())
-    code.save(f"static/barcodes/{isbn}")
-    flash("Barcode generated successfully!", "success")
-    return redirect(url_for('inventory'))
+    file_path = os.path.join(barcode_dir, isbn)
+    code.save(file_path)
+    
+    # Change this line so you actually GO to the barcode page!
+    return render_template('barcode.html', book=book, barcode_url=f"barcodes/{isbn}.png")
 
 @app.route('/checkout')
 @login_required
