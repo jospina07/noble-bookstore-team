@@ -226,6 +226,7 @@ def contact():
 # ==================== DATABASE INITIALIZATION ====================
 def init_db():
     with app.app_context():
+        db.drop_all()  # Drop existing tables for a clean slate
         db.create_all()
         admin = User.query.filter_by(username='admin').first()
         if not admin:
