@@ -8,21 +8,29 @@
     <p>Discover our collection of classic and contemporary books</p>
 </div>
 
-<section class="books-section">
-    <h2>Our Collection</h2>
-    <div class="books-grid">
+<div class="container mt-5">
+    <h2 class="mb-4">Our Collection</h2>
+    <div class="row">
         {% for book in books %}
-        <div class="book-card">
-            <div class="book-cover">📖</div>
-            <h3>{{ book.title }}</h3>
-            <p class="author">by {{ book.author }}</p>
-            <p class="description">{{ book.description }}</p>
-            <div class="book-footer">
-                <span class="price">${{ book.price }}</span>
-                <a href="/book/{{ book.id }}" class="btn btn-primary">View Details</a>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 book-card shadow-sm border-0">
+                <div class="card-img-top book-card-header d-flex align-items-center justify-content-center">
+                    <i class="bi bi-book-half display-1 text-white"></i>
+                </div>
+                
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ book.title }}</h5>
+                    <p class="text-muted small mb-1">by {{ book.author }}</p>
+                    <p class="card-text small text-secondary">{{ book.description[:75] }}...</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <span class="fs-5 fw-bold text-danger">${{ "%.2f"|format(book.price) }}</span>
+                        <a href="{{ url_for('book_detail', book_id=book.id) }}" class="btn btn-outline-danger btn-sm rounded-pill">View Details</a>
+                    </div>
+                </div>
             </div>
         </div>
         {% endfor %}
     </div>
-</section>
+</div>
 {% endblock %}

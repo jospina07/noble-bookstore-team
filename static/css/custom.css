@@ -1,0 +1,15 @@
+.book-card-header {
+    height: 180px;
+    background: linear-gradient(135deg, #d9534f 0%, #2c3e50 100%);
+    border-radius: 8px 8px 0 0;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    transition: 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+    background-color: #d9534f;
+    color: white;
+}
