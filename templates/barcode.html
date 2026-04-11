@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Barcode - {{ book.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h2>Barcode for: {{ book.title }}</h2>
+    <hr>
+    
+    <div class="my-4">
+        <img src="{{ url_for('static', filename=barcode_url) }}" alt="Barcode" class="img-fluid border p-4 bg-white">
+    </div>
+    
+    <div class="mt-4">
+        <a href="{{ url_for('inventory') }}" class="btn btn-secondary">Back to Inventory</a>
+        <button onclick="window.print()" class="btn btn-outline-primary">Print Barcode</button>
+    </div>
+</div>
+{% endblock %}

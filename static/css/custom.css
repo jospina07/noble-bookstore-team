@@ -1,0 +1,35 @@
+.book-card-header {
+    height: 180px;
+    background: linear-gradient(135deg, #d9534f 0%, #2c3e50 100%);
+    border-radius: 8px 8px 0 0;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    transition: 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+    background-color: #d9534f;
+    color: white;
+}
+.hero {
+    /* Same gradient as the books */
+    background: linear-gradient(135deg, #d9534f 0%, #2c3e50 100%);
+    color: white;             /* Make text white so it pops */
+    padding: 80px 20px;       /* Top/Bottom and Left/Right padding */
+    text-align: center;
+    margin-bottom: 3rem;
+    width: 100%;              /* Ensures it stretches across the screen */
+}
+
+.hero h1 {
+    font-weight: bold;
+    font-size: 3rem;          /* Makes the title big and bold */
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    opacity: 0.9;             /* Makes the sub-text slightly softer */
+}
