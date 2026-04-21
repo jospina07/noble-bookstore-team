@@ -1,214 +1,135 @@
 /* =========================
-   GLOBAL RESET
+   BASE RESET
 ========================= */
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
+/* =========================
+   BODY (NO BACKGROUND CONTROL HERE)
+========================= */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    min-height: 100vh;
+    line-height: 1.6;
+    color: #fff;
+    background: transparent;
 }
 
 /* =========================
-   BACKGROUND SAFETY
-========================= */
-body, html {
-    background: transparent !important;
-}
-
-/* =========================
-   TYPOGRAPHY DEFAULTS
+   TYPOGRAPHY
 ========================= */
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
+    color: #fff;
 }
 
-h1, h2, h3, h4, h5, h6, p, span, label {
-    color: inherit;
+p, small, label {
+    color: rgba(255,255,255,0.85);
+}
+
+/* =========================
+   LINKS
+========================= */
+a {
+    color: #d0d0d0;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ffffff;
 }
 
 /* =========================
    NAVBAR
 ========================= */
-.navbar-brand {
-    font-size: 1.5rem;
-}
-
-/* =========================
-   CONTAINERS
-========================= */
-.container {
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
-/* =========================
-   GLASS CARD SYSTEM (DARK MODE)
-========================= */
-.card {
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.12) !important;
+.navbar {
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    box-shadow: none !important;
+    background: rgba(0,0,0,0.6) !important;
+    z-index: 3000 !important;
 }
 
 /* =========================
-   TABLES (DARK MODE)
+   DROPDOWN FIX
 ========================= */
-.table thead th {
-    background-color: rgba(0,0,0,0.75);
-    color: #fff;
+.dropdown-menu {
+    background: rgba(25,25,25,0.95) !important;
+    border: 1px solid rgba(255,255,255,0.15);
+    z-index: 4000 !important;
 }
 
-.table-hover tbody tr:hover {
-    background-color: rgba(255,255,255,0.1);
+.dropdown-item {
+    color: #fff !important;
+}
+
+.dropdown-item:hover {
+    background: rgba(255,255,255,0.12) !important;
 }
 
 /* =========================
    BUTTONS
 ========================= */
-.btn {
-    border-radius: 6px;
-}
-
-.btn-light {
-    background: #ffffff !important;
-    color: #000 !important;
-}
-
 .btn-primary {
     background: #0d6efd !important;
-    color: white !important;
+    border: none;
 }
 
-.btn-warning {
-    color: black !important;
-}
-
-/* =========================
-   ALERTS
-========================= */
-.alert {
-    border-radius: 6px;
+.btn-primary:hover {
+    background: #0b5ed7 !important;
 }
 
 /* =========================
-   HERO SECTION
+   GLASS CARD (ONLY VERSION — NO DUPLICATES)
 ========================= */
-.hero {
-    background: linear-gradient(135deg, #d9534f 0%, #2c3e50 100%);
-    color: white;
-    padding: 80px 20px;
-    text-align: center;
-    margin-bottom: 3rem;
-    width: 100%;
+.glass-card {
+    background: rgba(255,255,255,0.10) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 16px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+
+    color: #fff !important;
+}
+
+/* Force readable text inside glass */
+.glass-card h1,
+.glass-card h2,
+.glass-card h3,
+.glass-card h4,
+.glass-card h5,
+.glass-card p,
+.glass-card span,
+.glass-card small {
+    color: #fff !important;
 }
 
 /* =========================
-   BOOK CARDS
+   TABLES
 ========================= */
-.book-card-header {
-    height: 180px;
-    background: linear-gradient(135deg, #d9534f 0%, #2c3e50 100%);
-    border-radius: 8px 8px 0 0;
-}
-
-.book-card:hover {
-    transform: translateY(-5px);
-    transition: 0.3s ease;
-}
-
-/* =========================
-   LIGHT PAGE SYSTEM (SALES / REPORTS)
-========================= */
-.light-page {
-    background: #f8f9fa !important;
-    color: #212529 !important;
-}
-
-.light-page h1,
-.light-page h2,
-.light-page h3,
-.light-page h4,
-.light-page h5,
-.light-page h6,
-.light-page p,
-.light-page span,
-.light-page label,
-.light-page td,
-.light-page th {
-    color: #212529 !important;
-}
-
-.light-page table {
-    color: #212529 !important;
-}
-
-.light-page .card {
-    background: #ffffff !important;
-    color: #212529 !important;
-    border: 1px solid #dee2e6 !important;
-}
-
-.light-page thead th {
-    background: #343a40 !important;
-    color: white !important;
-}
-
-/* =========================
-   ✅ BEST FIX: EMPTY STATE SYSTEM
-   (replaces text-muted problem forever)
-========================= */
-.empty-state {
-    text-align: center;
-    padding: 40px 20px;
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: #495057;
-    opacity: 0.9;
-}
-
-.light-page .empty-state {
-    color: #212529 !important;
-    opacity: 1;
-}
-.text-pure-black {
-    color: #000 !important;
-    font-weight: 600;
-}
-/* =========================
-   GLOBAL TABLE SOFT GRAY STYLE
-========================= */
-
-/* Light gray table background */
 .table {
-    background-color: #f5f6f8;
-    border-color: #dee2e6;
+    background: rgba(255,255,255,0.08) !important;
+    color: #fff !important;
 }
 
-/* Slightly darker gray rows */
-.table tbody tr {
-    background-color: #f8f9fa;
-}
+/* =========================
+   GLASS UTILITY (OPTIONAL)
+========================= */
+.glass {
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 
-/* Row hover (soft gray highlight) */
-.table-hover tbody tr:hover {
-    background-color: #e9ecef;
-}
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 14px;
 
-/* Table cells spacing + tone */
-.table td,
-.table th {
-    background-color: transparent;
-    color: #212529;
-}
-
-/* Header row (keeps professional look) */
-.table thead th {
-    background-color: #343a40;
-    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    color: #fff;
 }
